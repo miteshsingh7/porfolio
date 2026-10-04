@@ -95,7 +95,7 @@ button.chip{cursor:pointer;color:var(--m);font-family:inherit}button.chip:hover{
 .btn[hidden]{display:none}.grid#racks{grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}.node{gap:12px}.node .cap{text-align:right}.card.mp{max-height:88vh;overflow-y:auto}
 .hero>*{min-width:0}.btn,.node{overflow-wrap:anywhere}.node>*{min-width:0}
 @media(max-width:600px){header{height:96px;flex-wrap:wrap;align-content:center;gap:8px}nav{width:100%;padding-bottom:4px}section{padding-top:128px}.card.mp{padding:20px}.stage:before{inset:-16px}}
-/* The graphic gets its own column, keeping motion out of the reading area. */
+/* Diagrams live inside the section flow, rather than a fixed sidebar. */
 .rv{translate:0 18px;transition:opacity .9s cubic-bezier(.22,1,.36,1),translate 1s cubic-bezier(.22,1,.36,1);transition-delay:calc(min(var(--d,0),4)*65ms)}
 nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
 .logo i{animation:none;border-radius:50%}
@@ -107,8 +107,8 @@ nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
 .scene-name{font:600 16px Syne,sans-serif;color:var(--t)}
 .scene-track{height:2px;background:var(--b);overflow:hidden}
 .scene-track span{display:block;width:100%;height:100%;background:var(--l);transform-origin:left;transform:scaleX(var(--scene-progress,0));transition:transform .35s linear}
-#motion-toggle{pointer-events:auto;font:inherit;font-size:12px;color:var(--m);background:none;border:0;padding:4px 8px;cursor:pointer}
-#motion-toggle:hover{color:var(--l)}
+#motion-toggle,[data-motion-toggle]{pointer-events:auto;font:inherit;font-size:12px;color:var(--m);background:none;border:0;padding:4px 8px;cursor:pointer}
+#motion-toggle:hover,[data-motion-toggle]:hover{color:var(--l)}
 .graphics-unavailable{display:none}
 .card{transition:transform .6s cubic-bezier(.22,1,.36,1),border-color .4s,background .4s}
 .node{transition:translate .4s cubic-bezier(.22,1,.36,1),border-color .4s}
@@ -119,20 +119,31 @@ nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
 #mod.open{visibility:visible}
 .card.mp{clip-path:none;transform:translateY(20px) scale(.98);opacity:0;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s}
 #mod.open .mp{clip-path:none;transform:translateY(0) scale(1);opacity:1}
-@media(min-width:1100px){
-  section{padding-right:calc(39vw + var(--px));min-height:100svh}
-  .hero{grid-template-columns:1fr;gap:0}
-  .hero h1{font-size:clamp(36px,8.3cqw,100px)}
-  .stage{position:fixed;right:var(--px);top:23vh;width:32vw;height:60vh;max-height:620px}
-  .big{font-size:clamp(32px,4.6vw,76px)}
-  .ab{grid-template-columns:1fr;gap:24px}
-  #racks,#proj{grid-template-columns:repeat(2,minmax(0,1fr))}
-  #racks .cb{padding:16px}#racks .node{flex-direction:column;gap:4px}#racks .node .cap{text-align:left}
-  .grid{gap:20px}
+.hero{grid-template-columns:1fr;gap:40px}
+.hero>div:first-child{max-width:1000px;width:100%}
+.hero h1{font-size:clamp(40px,8.3cqw,104px)}
+.hero p{max-width:65ch}
+.stage{position:relative;width:100%;height:clamp(580px,78vh,820px);min-width:0}
+.scene-top{padding-bottom:16px}.scene-caption{padding-bottom:16px}
+.scene-name{font-size:20px}.scene-top .cap,.scene-caption .cap{font-size:12px}
+.diagram-description{color:var(--m);max-width:72ch;font-size:14px;line-height:1.6}
+.diagram-stage{height:clamp(570px,76vh,800px);margin:8px 0 24px}
+.big{font-size:clamp(28px,7vw,104px)}
+#hero{padding-top:128px;padding-bottom:48px}
+#hero .hero>div:first-child{position:relative}
+@media(min-width:1000px){
+  #hero .hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);gap:32px}
+  #hero .stage{height:calc(100svh - 180px);min-height:540px}
+  #hero h1{font-size:clamp(40px,8.5cqw,88px)}
+  .ab{grid-template-columns:1.3fr 1fr}
+  #proj{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
-@media(max-width:1099px){.hero{grid-template-columns:1fr;gap:44px}.hero h1{font-size:clamp(30px,8.3cqw,90px)}.stage{height:360px}}
-@media(max-width:600px){.stage{height:300px}.scene-top .cap,.scene-caption .cap{font-size:10px}.scene-name{font-size:14px}.hero{gap:36px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.rv{opacity:1;translate:none}.card{transform:none!important}#motion-toggle{display:none}#cur,#cur2{display:none!important}body,a,button,input,.card{cursor:auto}}
+@media(max-width:600px){
+  .hero{gap:36px}.stage,.diagram-stage{height:480px}
+  .scene-name{font-size:16px}.scene-caption .cap{font-size:10px}
+  .scene-top .cap{font-size:11px}.scene-caption{align-items:flex-end}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.rv{opacity:1;translate:none}.card{transform:none!important}#motion-toggle,[data-motion-toggle]{display:none}#cur,#cur2{display:none!important}body,a,button,input,.card{cursor:auto}}
 </style></head>
 <body>
 <canvas id="gl" aria-hidden="true"></canvas>
@@ -150,9 +161,9 @@ nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
       <p class="rv" style="--d:2">AI engineering intern based in Noida. I build and evaluate deep learning models, from data to a working app.</p>
       <div class="btns rv" style="--d:3"><a class="btn pri" href="#projects" data-go="projects">View projects</a><a class="btn" href="#contact" data-go="contact">Get in touch</a></div>
     </div>
-    <div class="stage" id="stage">
-      <div class="scene-top"><span class="cap">Computational forms</span><button id="motion-toggle" type="button" aria-label="Pause graphic animation" aria-pressed="false">Pause</button></div>
-      <div class="scene-caption"><span class="scene-name" id="scene-name">Neural core</span><span class="cap">Scroll to explore</span></div>
+    <div class="stage" id="stage" data-diagram="transformer" role="group" aria-label="Animated decoder transformer: tokens and positional embeddings enter masked multi-head attention and feed-forward blocks with residual connections, then softmax predicts the next token and feeds it back.">
+      <div class="scene-top"><span class="cap">Inside the model</span><button id="motion-toggle" type="button" aria-label="Pause graphic animation" aria-pressed="false">Pause</button></div>
+      <div class="scene-caption"><span class="scene-name" id="scene-name">The transformer</span><span class="cap">Autoregressive inference</span></div>
       <div class="scene-track"><span></span></div>
     </div>
   </div>
@@ -166,17 +177,32 @@ nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
   <div class="rv"><div class="cap"><span class="dot"></span>&nbsp; What I work with</div></div>
   <h2 class="big rv" style="--d:1" data-scr>Skills</h2>
   <div class="div rv"></div>
+  <figure class="stage diagram-stage" data-diagram="neural" role="img" aria-label="Neural network with an input layer, two hidden layers, and an output layer. Signals travel forward, while loss gradients propagate backward to update weights.">
+    <div class="scene-top"><span class="cap">Deep learning / signal propagation</span></div>
+    <figcaption class="scene-caption"><span class="scene-name">Learning, layer by layer.</span><span class="cap">Forward → backward</span></figcaption>
+  </figure>
+  <p class="diagram-description">Inputs become predictions through connected layers. Backpropagation carries the loss gradient back through the network to update its weights.</p>
   <div class="grid" id="racks"></div>
 </section>
 <section id="projects">
   <div class="rv"><div class="cap"><span class="dot"></span>&nbsp; What I have built</div></div>
   <h2 class="big rv" style="--d:1" data-scr>Projects</h2>
   <div class="div rv"></div>
+  <figure class="stage diagram-stage" data-diagram="rag" role="img" aria-label="Retrieval-augmented generation: documents are chunked and embedded into a vector store. A query retrieves relevant context, which is sent with the query to an LLM to generate an answer.">
+    <div class="scene-top"><span class="cap">Architecture study / RAG</span></div>
+    <figcaption class="scene-caption"><span class="scene-name">Retrieve. Augment. Generate.</span><span class="cap">Knowledge → answer</span></figcaption>
+  </figure>
+  <p class="diagram-description">A conceptual RAG pipeline: retrieve relevant document chunks, add them to the prompt, and generate a grounded answer. The projects below retain their own actual architectures.</p>
   <div class="grid" id="proj"></div>
 </section>
 <section id="experience">
   <div class="cap rv"><span class="dot"></span>&nbsp; Where I have worked and studied</div>
   <h2 class="big rv" style="--d:1" data-scr>Experience</h2><div class="div rv"></div>
+  <figure class="stage diagram-stage" data-diagram="lora" role="img" aria-label="LoRA fine-tuning: input activations pass through frozen model weights and a parallel pair of trainable low-rank adapter matrices A and B. Their outputs are added to form the adapted output.">
+    <div class="scene-top"><span class="cap">Fine-tuning / low-rank adaptation</span></div>
+    <figcaption class="scene-caption"><span class="scene-name">Small adapters. New capabilities.</span><span class="cap">Frozen + trainable</span></figcaption>
+  </figure>
+  <p class="diagram-description">LoRA keeps the base weights frozen and trains a small pair of adapter matrices alongside them. Their contribution is added to the base model output.</p>
   <div class="grid" id="exp"></div>
 </section>
 <section id="ask">
@@ -239,7 +265,6 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.targ
 $$('.rv').forEach(e=>io.observe(e));
 
 const secs=$$('main section'),links=$$('#nav a');let cur=-1;
-const sceneNames=['Neural core','Connections','Latent space','Model layers','Evolution','Signal flow','In orbit'];
 let tops=[];
 const measureSections=()=>{tops=secs.map(section=>section.offsetTop);onScroll()};
 $$('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.getElementById(a.dataset.go).scrollIntoView({behavior:reduce?'auto':'smooth'})}));
@@ -256,7 +281,7 @@ function onScroll(){
   document.documentElement.style.setProperty('--sp',scrollY/Math.max(1,document.body.scrollHeight-innerHeight));
   $('#stage').style.setProperty('--scene-progress',progress/6);
   if(i!==cur){cur=i;links.forEach((link,k)=>{link.classList.toggle('on',k===i);if(k===i)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current')});
-    $('#scene-name').textContent=sceneNames[i];
+
   }
 }
 addEventListener('scroll',onScroll,{passive:true});
@@ -273,7 +298,9 @@ $$('.card[data-k]').forEach(c=>{
   c.addEventListener('pointerleave',()=>{S.hv=-1;c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')})});
 
 const S={s:0,px:0,py:0,hv:-1,paused:false};
-$('#motion-toggle').addEventListener('click',e=>{S.paused=!S.paused;e.currentTarget.setAttribute('aria-pressed',String(S.paused));e.currentTarget.setAttribute('aria-label',S.paused?'Resume graphic animation':'Pause graphic animation');e.currentTarget.textContent=S.paused?'Play':'Pause';onScroll();dispatchEvent(new Event('graphicsmotionchange'))});
+$$('.diagram-stage').forEach(figure=>{figure.setAttribute('role','group');const control=document.createElement('button');control.type='button';control.dataset.motionToggle='';control.textContent='Pause';control.setAttribute('aria-label','Pause graphic animation');control.setAttribute('aria-pressed','false');$('.scene-top',figure).append(control)});
+const motionControls=$$('#motion-toggle,[data-motion-toggle]');
+motionControls.forEach(control=>control.addEventListener('click',()=>{S.paused=!S.paused;motionControls.forEach(button=>{button.setAttribute('aria-pressed',String(S.paused));button.setAttribute('aria-label',S.paused?'Resume graphic animation':'Pause graphic animation');button.textContent=S.paused?'Play':'Pause'});onScroll();dispatchEvent(new Event('graphicsmotionchange'))}));
 addEventListener('pointermove',e=>{if(e.pointerType==='touch'||reduce)return;S.px=e.clientX/innerWidth*2-1;S.py=e.clientY/innerHeight*2-1});
 onScroll();
 import('./graphics.js').then(({createGraphics})=>createGraphics({canvas:$('#gl'),stage:$('#stage'),state:S,motion})).catch(()=>{$('#gl').hidden=true;$('#stage').classList.add('graphics-unavailable')});
