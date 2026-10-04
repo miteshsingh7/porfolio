@@ -131,7 +131,7 @@ nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
 .big{font-size:clamp(28px,7vw,104px)}
 #hero{padding-top:128px;padding-bottom:48px}
 #hero .hero>div:first-child{position:relative}
-#hero h1{font-size:clamp(48px,19cqw,200px);line-height:.9}
+#hero h1{font-size:clamp(40px,15.5cqw,200px);line-height:.9}
 @media(min-width:1000px){
   #hero .hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);gap:32px}
   #hero .stage{height:calc(100svh - 180px);min-height:540px}
@@ -168,7 +168,7 @@ nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
     </div>
   </div>
 </section>
-<section id="about">
+<section id="about" data-model="transformer">
   <div class="cap rv"><span class="dot"></span>&nbsp; Who I am</div>
   <h2 class="big rv" style="--d:1" data-scr>About</h2><div class="div rv"></div>
   <div class="ab"><div id="abt"></div><div class="card rv" id="abs"></div></div>
@@ -205,13 +205,13 @@ nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
   <p class="diagram-description">LoRA keeps the base weights frozen and trains a small pair of adapter matrices alongside them. Their contribution is added to the base model output.</p>
   <div class="grid" id="exp"></div>
 </section>
-<section id="ask">
+<section id="ask" data-model="rag">
   <div class="cap rv"><span class="dot"></span>&nbsp; Ask about my work</div>
   <h2 class="big rv" style="--d:1" data-scr>Ask me</h2>
   <div class="term rv"><div id="tout" aria-live="polite"></div><form class="tin" id="tf" autocomplete="off"><span class="lime">&gt;</span><input id="tq" type="text" enterkeyhint="send" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ask about skills, projects, experience..." aria-label="Ask about Mitesh"><button type="submit" class="chip cap" style="cursor:pointer">Send</button></form></div>
   <div class="tags rv" id="sug"></div>
 </section>
-<section id="contact">
+<section id="contact" data-model="transformer">
   <div class="cap rv"><span class="dot"></span>&nbsp; Contact</div>
   <h2 class="big rv" style="--d:1" data-scr>Get in<br>touch</h2>
   <div class="btns rv" style="--d:2"><a class="btn pri" id="em" href="#" hidden>Email me</a><a class="btn" href="https://github.com/miteshsingh7" target="_blank" rel="noopener">GitHub: miteshsingh7</a><a class="btn" href="https://www.linkedin.com/in/mitesh-singh007/" target="_blank" rel="noopener">LinkedIn</a></div>
