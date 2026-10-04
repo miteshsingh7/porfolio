@@ -1,102 +1,109 @@
 import * as THREE from 'three';
-import { buildDiagram } from './diagrams.js';
+import { buildModels, smooth } from './diagrams.js';
 
-export function createGraphics({ canvas, stage, state, motion }) {
+export function createGraphics({ canvas, state, motion }) {
   let renderer;
-  const stages = [...document.querySelectorAll('[data-diagram]')];
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   } catch {
     canvas.hidden = true;
-    stages.forEach(element => element.classList.add('graphics-unavailable'));
     return;
   }
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-  camera.position.z = 10;
-  const diagrams = stages.map(element => ({ element, ...buildDiagram(element.dataset.diagram) }));
-  diagrams.forEach(({ group }) => { scene.add(group); group.visible = false; });
-  const worldHeight = 2 * Math.tan(THREE.MathUtils.degToRad(20)) * 10;
-  const clamp = x => Math.max(0, Math.min(1, x));
-  const smooth = x => x * x * (3 - 2 * x);
-  let width = 1, height = 1, time = 0, previous = 0, frame, lost = false;
-  let pointerX = 0, pointerY = 0;
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-  function resize() {
-    width = innerWidth; height = innerHeight;
-    renderer.setPixelRatio(Math.min(devicePixelRatio, width < 700 ? 1.5 : 2));
-    renderer.setSize(width, height, false);
-    camera.aspect = width / height;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, .1, 100);
+  camera.position.z = 7;
+  const halfH = Math.tan(THREE.MathUtils.degToRad(22.5)) * 7;
+
+  const models = buildModels();
+  const entries = [...document.querySelectorAll('[data-diagram]')]
+    .map((el, i) => ({ el, i, model: models[el.dataset.diagram], ready: false, x: 0, y: 0, z: 0, s: 1 }))
+    .filter(entry => entry.model);
+  entries.forEach(entry => scene.add(entry.model.group));
+
+  const dust = new Float32Array(400 * 3);
+  for (let i = 0; i < dust.length; i++) dust[i] = (Math.random() - .5) * (i % 3 === 2 ? 10 : 16);
+  const dustGeometry = new THREE.BufferGeometry();
+  dustGeometry.setAttribute('position', new THREE.BufferAttribute(dust, 3));
+  const dustPoints = new THREE.Points(dustGeometry, new THREE.PointsMaterial({ color: 0xF2F0EB, size: .025, transparent: true, opacity: .3 }));
+  scene.add(dustPoints);
+
+  let W = 1, H = 1;
+  const resize = () => {
+    W = innerWidth;
+    H = innerHeight;
+    renderer.setSize(W, H, false);
+    camera.aspect = W / H;
     camera.updateProjectionMatrix();
-    resume();
-  }
-  function draw(now) {
-    const dt = Math.min((now - previous) / 1000 || 0, 0.05);
-    previous = now;
-    const still = motion.matches || state.paused;
-    if (!still) time += dt;
-    const damping = 1 - Math.exp(-dt * 6);
-    pointerX += ((still ? 0 : state.px) - pointerX) * damping;
-    pointerY += ((still ? 0 : state.py) - pointerY) * damping;
-    renderer.setScissorTest(false);
-    renderer.clear();
-    renderer.setScissorTest(true);
-    diagrams.forEach(({ element, group, update }, index) => {
-      const rect = element.getBoundingClientRect();
-      if (rect.bottom < 0 || rect.top > height) return;
-      const top = rect.top + 48, bottom = rect.bottom - 56;
-      const centerY = (top + bottom) / 2;
-      const journey = (height / 2 - centerY) / (height * 0.8);
-      const exit = smooth(clamp(journey));
-      const entry = smooth(clamp(-journey));
-      const zoom = still ? 1 : 1 + exit * 0.65 + entry * 0.2;
-      const spread = element.dataset.diagram === 'transformer' ? 1 : Math.min(1.8, Math.max(1, rect.width / 650));
-      const fit = Math.min(rect.width / (6.6 * spread), (bottom - top) / 6.5) * worldHeight / height;
-      group.position.set(((rect.left + rect.width / 2) / width - 0.5) * worldHeight * camera.aspect, (0.5 - centerY / height) * worldHeight, 0);
-      group.scale.set(fit * zoom * spread, fit * zoom, fit * zoom);
-      group.rotation.set(still ? 0 : pointerY * 0.018, still ? 0 : pointerX * 0.035, 0);
-      group.visible = true;
-      update(time);
-      const opacity = still ? 1 : 1 - exit * 0.55;
-      group.traverse(object => {
-        if (object.isSprite) {
-          if (object.userData.labelWidth === undefined) object.userData.labelWidth = object.scale.x;
-          object.scale.x = object.userData.labelWidth / spread;
-        }
-        if (object.geometry?.type === 'SphereGeometry') object.scale.x = object.scale.y / spread;
-        if (!object.material) return;
-        if (object.userData.baseOpacity === undefined) object.userData.baseOpacity = object.material.opacity;
-        if (object.isSprite || object.isLine || object.isLineSegments) object.material.opacity = object.userData.baseOpacity * opacity;
-      });
-      const clipTop = Math.max(0, top), clipBottom = Math.min(height, bottom);
-      if (clipBottom > clipTop) {
-        renderer.setScissor(Math.max(0, rect.left), height - clipBottom, Math.min(rect.width, width), clipBottom - clipTop);
-        renderer.render(scene, camera);
-      }
-      group.visible = false;
-      canvas.dataset.scene = element.dataset.diagram;
-      canvas.dataset.progress = String(index);
-      element.dataset.zoom = zoom.toFixed(3);
-    });
-    canvas.dataset.scroll = String(Math.round(scrollY));
-    renderer.setScissorTest(false);
-    if (!still && !document.hidden && !lost) frame = requestAnimationFrame(draw);
-  }
-  function resume() {
-    cancelAnimationFrame(frame);
-    if (document.hidden || lost) return;
-    previous = performance.now();
-    draw(previous);
-  }
+  };
   addEventListener('resize', resize);
-  addEventListener('graphicsmotionchange', resume);
-  addEventListener('scroll', () => { if (motion.matches || state.paused) resume(); }, { passive: true });
-  document.addEventListener('visibilitychange', resume);
-  motion.addEventListener('change', resume);
-  canvas.addEventListener('webglcontextlost', event => { event.preventDefault(); lost = true; cancelAnimationFrame(frame); });
-  canvas.addEventListener('webglcontextrestored', () => { lost = false; resume(); });
-  const observer = new ResizeObserver(resize);
-  stages.forEach(element => observer.observe(element));
-  document.fonts.ready.then(resize);
   resize();
+
+  // Continuous index of the diagram in focus; the hand-off between two diagrams happens across the middle 40% of the scroll gap between them.
+  const focus = () => {
+    const centers = entries.map(entry => {
+      entry.rect = entry.el.getBoundingClientRect();
+      return entry.rect.top + entry.rect.height / 2;
+    });
+    const v = H / 2;
+    if (v <= centers[0]) return 0;
+    for (let i = 0; i < centers.length - 1; i++) {
+      if (v < centers[i + 1]) return i + smooth(((v - centers[i]) / (centers[i + 1] - centers[i]) - .3) / .4);
+    }
+    return centers.length - 1;
+  };
+
+  const clock = new THREE.Clock();
+  let speed = 1, time = 0;
+  (function frame() {
+    const reduce = motion.matches, frozen = reduce || state.paused;
+    const dt = frozen ? 0 : Math.min(clock.getDelta(), .05);
+    if (frozen) clock.getDelta();
+    time += dt;
+    speed += ((state.hv >= 0 ? 2.6 : 1) - speed) * .06;
+    const f = focus(), aspect = camera.aspect, active = Math.round(f);
+
+    entries.forEach((entry, i) => {
+      const { group } = entry.model, d = f - i, visible = 1 - Math.abs(d);
+      if (visible <= 0) { group.visible = false; entry.ready = false; return; }
+      group.visible = true;
+
+      const r = entry.rect;
+      const dockX = ((r.left + r.width / 2) / W * 2 - 1) * halfH * aspect;
+      const rawY = -((r.top + r.height / 2) / H * 2 - 1) * halfH;
+      const offscreen = Math.min(1, Math.max(0, Math.abs(rawY) - halfH * .55) / (halfH * 1.1));
+      const dock = Math.max(-halfH * .5, Math.min(halfH * .5, rawY)) * (1 - Math.abs(d));
+      const fit = Math.min((r.width / W) * 2 * halfH * aspect / entry.model.width, (r.height / H) * 2 * halfH / entry.model.height);
+
+      let z = 0, zoom = 1, fade = visible;
+      if (!reduce) {
+        if (d > 0) { z = smooth(d) * 4.2; zoom = 1 + d * .5; fade = Math.pow(1 - d, 1.6); }
+        else if (d < 0) { z = d * 10; fade = 1 + d; }
+      }
+      const targetScale = fit * zoom;
+      if (!entry.ready) { entry.x = dockX; entry.y = dock; entry.z = z; entry.s = targetScale; entry.ready = true; }
+      entry.x += (dockX - entry.x) * .12;
+      entry.y += (dock - entry.y) * .14;
+      entry.z += (z - entry.z) * .14;
+      entry.s += (targetScale - entry.s) * .12;
+      group.position.set(entry.x, entry.y, entry.z);
+      group.scale.setScalar(entry.s);
+
+      const sway = reduce ? -.4 : -.45 + Math.sin(time * .3 + i * 1.7) * .25;
+      group.rotation.y += (sway + state.px * .3 + d * .9 - group.rotation.y) * .05;
+      group.rotation.x += (.12 + state.py * .1 - group.rotation.x) * .05;
+
+      entry.model.update({ dt, t: time, boost: i === active ? speed : 1 });
+      const opacity = fade * (1 - .6 * offscreen);
+      entry.model.materials.forEach(material => { material.opacity = material.userData.base * opacity; });
+    });
+
+    dustPoints.rotation.y = f * .15;
+    camera.position.x += (state.px * .4 - camera.position.x) * .04;
+    camera.position.y += (-state.py * .25 - camera.position.y) * .04;
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  })();
 }
