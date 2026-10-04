@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mitesh | AI Engineer</title>
+<meta name="description" content="Mitesh is an AI engineer based in Noida, Delhi NCR. Explore deep learning, LLM fine-tuning, and machine learning projects.">
+<meta name="theme-color" content="#08080A">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#08080A;--p:#101014;--r:#16161B;--b:#24242B;--t:#F2F0EB;--m:#8A8A8F;--l:#B8F500;--v:#8B5CF6;--px:clamp(20px,5vw,80px)}
-*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;background:var(--bg)}
+[data-scr]{white-space:pre-line}
+:focus-visible{outline:2px solid var(--l);outline-offset:4px}
+body.modal-open{overflow:hidden}
 body{background:var(--bg);color:var(--t);font:400 14px/1.6 'Space Mono',monospace;overflow-x:hidden}
 ::selection{background:var(--l);color:var(--bg)}::-webkit-scrollbar{display:none}
 #gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
@@ -34,7 +39,8 @@ section{min-height:100vh;padding:112px var(--px) 72px;display:flex;flex-directio
 .rv.in{opacity:1;translate:0 0}
 /* hero */
 .hero{display:grid;grid-template-columns:7fr 5fr;gap:40px;align-items:center}
-.hero h1{font-size:clamp(44px,9vw,120px)}
+.hero>div:first-child{container-type:inline-size}
+.hero h1{font-size:clamp(24px,10cqw,120px)}
 .hero p{max-width:52ch;color:var(--m)}
 .btns{display:flex;flex-wrap:wrap;gap:12px}
 .btn{font:700 12px 'Space Mono';text-transform:uppercase;letter-spacing:.08em;padding:14px 20px;border:1px solid var(--b);background:var(--p);color:var(--t);text-decoration:none;cursor:pointer;transition:border-color .15s,color .15s,translate .15s}
@@ -66,7 +72,7 @@ section{min-height:100vh;padding:112px var(--px) 72px;display:flex;flex-directio
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .card p{padding:0 24px;color:var(--m)}.card .tags{padding:0 24px 24px}
 .card .ch{margin-bottom:16px}
-.big{font-size:clamp(40px,8vw,104px)}
+.big{font-size:clamp(28px,8vw,104px)}
 footer{border-top:1px solid var(--b);background:var(--bg);padding:48px var(--px);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-end}
 footer h2{font-size:28px}
 @media(max-width:900px){.hero{grid-template-columns:1fr}.chip.hide{display:none}}
@@ -91,11 +97,13 @@ button.chip{cursor:pointer;color:var(--m);font-family:inherit}button.chip:hover{
 body.hot #cur2{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(184,245,0,.1);rotate:45deg}
 @media(pointer:fine){body,a,button,input,.card{cursor:none}#cur,#cur2{display:block}}
 @media(max-width:900px){.ab{grid-template-columns:1fr}}
-.btn[hidden]{display:none}.grid#racks{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.node{gap:12px}.node .cap{text-align:right}.card.mp{max-height:88vh;overflow-y:auto}
+.btn[hidden]{display:none}.grid#racks{grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}.node{gap:12px}.node .cap{text-align:right}.card.mp{max-height:88vh;overflow-y:auto}
+.hero>*{min-width:0}.btn,.node{overflow-wrap:anywhere}.node>*{min-width:0}
+@media(max-width:600px){header{height:96px;flex-wrap:wrap;align-content:center;gap:8px}nav{width:100%;padding-bottom:4px}section{padding-top:128px}.card.mp{padding:20px}.stage:before{inset:-16px}}
 </style></head>
 <body>
 <div id="cur"></div><div id="cur2"></div><canvas id="gl" aria-hidden="true"></canvas>
-<div id="mod" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="card mp"><i>+</i><i>+</i><i>+</i><i>+</i><div class="cap" id="mh"></div><h3 id="mt"></h3><div id="mb"></div><div class="tags" id="mg"></div><div class="btns"><a class="btn pri" id="mc" href="#" target="_blank" rel="noopener">View code</a><a class="btn" id="m3" href="#" target="_blank" rel="noopener" hidden>View v3 code</a><a class="btn" id="md" href="#" target="_blank" rel="noopener" hidden>Live demo</a><button class="btn" id="mx">Close [esc]</button></div></div></div><div id="scan"></div>
+<div id="mod" inert aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="card mp"><i>+</i><i>+</i><i>+</i><i>+</i><div class="cap" id="mh"></div><h3 id="mt"></h3><div id="mb"></div><div class="tags" id="mg"></div><div class="btns"><a class="btn pri" id="mc" href="#" target="_blank" rel="noopener">View code</a><a class="btn" id="m3" href="#" target="_blank" rel="noopener" hidden>View v3 code</a><a class="btn" id="md" href="#" target="_blank" rel="noopener" hidden>Live demo</a><button class="btn" id="mx">Close [esc]</button></div></div></div><div id="scan"></div>
 <header>
   <a class="logo" href="#hero" data-go="hero">MITESH<i></i><span class="cap">AI Engineer</span></a>
   <nav class="cap" id="nav"><a href="#hero" data-go="hero">00 / Home</a><a href="#about" data-go="about">01 / About</a><a href="#skills" data-go="skills">02 / Skills</a><a href="#projects" data-go="projects">03 / Projects</a><a href="#experience" data-go="experience">04 / Experience</a><a href="#ask" data-go="ask">05 / Ask Me</a><a href="#contact" data-go="contact">06 / Contact</a></nav>
@@ -154,8 +162,8 @@ body.hot #cur2{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(184
   <div class="cap" style="text-align:right">&copy; 2026 Mitesh</div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
+<script type="module">
+import * as THREE from 'three';
 /* ===== EDIT YOUR CONTENT HERE ===== */
 const ABOUT={p:['I am an AI engineering intern based in Noida, Delhi NCR. I completed my B.Tech in Computer Science at Delhi Technical Campus (2022 to 2026).','I like models that hold up when tested honestly, and I like taking them all the way to something people can use.','Outside of work I play chess and volleyball.'],
  side:[['ROLE','AI Engineering Intern'],['LOCATION','Noida, Delhi NCR'],['EDUCATION','B.Tech CSE, DTC'],['HOBBIES','Chess, volleyball']]};
@@ -207,8 +215,9 @@ $$('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();doc
 function onScroll(){
   const mid=scrollY+innerHeight*.5,tops=secs.map(s=>s.offsetTop);let i=0;
   tops.forEach((t,k)=>{if(mid>=t)i=k});
-  const nx=tops[i+1]??document.body.scrollHeight,f=Math.min(1,Math.max(0,(mid-tops[i])/(nx-tops[i])));
-  S.s=i+f;
+  let sceneIndex=0;tops.forEach((t,k)=>{if(scrollY>=t)sceneIndex=k});
+  const nx=tops[sceneIndex+1]??document.body.scrollHeight;
+  S.s=sceneIndex+Math.min(1,Math.max(0,(scrollY-tops[sceneIndex])/(nx-tops[sceneIndex])));
   document.documentElement.style.setProperty('--sp',scrollY/Math.max(1,document.body.scrollHeight-innerHeight));
   if(i!==cur){cur=i;links.forEach((l,k)=>l.classList.toggle('on',k===i));
     if(!reduce){scan.classList.remove('go');void scan.offsetWidth;scan.classList.add('go')}
@@ -269,18 +278,21 @@ if(R){
   const N=400,P=new Float32Array(N*3);for(let i=0;i<N*3;i++)P[i]=(Math.random()-.5)*(i%3==2?10:16);
   const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(P,3));
   sc.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0xF2F0EB,size:.025,transparent:true,opacity:.3})));
-  let W=1,H=1,hx=0,hy=0;const hw=()=>Math.tan(.3927)*7;
+  let W=1,H=1,hx=0,hy=0,heroScale=1;const hw=()=>Math.tan(.3927)*7;
   function size(){W=innerWidth;H=innerHeight;R.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();
-    const r=$('#stage').getBoundingClientRect(),mob=W<900;
-    hx=mob?0:((r.left+r.width/2)/W*2-1)*hw()*cam.aspect;hy=-((r.top+r.height/2)/H*2-1)*hw()}
-  addEventListener('resize',size);size();
+    const stage=$('#stage'),r=stage.getBoundingClientRect();
+    const translateY=parseFloat(getComputedStyle(stage).translate.split(' ')[1])||0;
+    hx=((r.left+r.width/2)/W*2-1)*hw()*cam.aspect;hy=-((r.top+scrollY-translateY+r.height/2)/H*2-1)*hw();
+    heroScale=.88*Math.min(r.width*2*hw()*cam.aspect/W/4.5,r.height*2*hw()/H/5.5)}
+  addEventListener('resize',size);new ResizeObserver(size).observe($('#stage'));document.fonts.ready.then(size);size();
+  g.position.set(hx,hy,0);
   const key=(a,s)=>{const i=Math.min(a.length-1,Math.floor(s)),j=Math.min(a.length-1,i+1);return a[i]+(a[j]-a[i])*(s-Math.floor(s))};
   let cyc=reduce?.55:0,speed=1,hm=0,pk=2,last=0;const clock=new THREE.Clock();
   (function loop(){
     const dt=reduce?0:clock.getDelta(),t=clock.elapsedTime,mob=W<900,k=mob?.25:1,hov=S.hv>=0;
     const tX=key([hx,2.6*k,0,-2.6*k,2.6*k,0,0],S.s),tY=key([hy,0,0,0,0,0,0],S.s),tZ=key([0,-2.5,-4,-3,-3,-4,.5],S.s);
     g.position.x+=(tX-g.position.x)*.06;g.position.y+=(tY-g.position.y)*.06;g.position.z+=(tZ-g.position.z)*.06;
-    g.scale.setScalar(mob?.85:Math.min(1.5,innerHeight/900+.55));
+    g.scale.setScalar(key([heroScale,...Array(6).fill(mob?.85:Math.min(1.5,H/900+.55))],S.s));
     speed+=((hov?2.6:1)-speed)*.06;hm+=((hov?1:0)-hm)*.06;
     cyc+=dt*.14*speed;const ph=cyc%1,cn=Math.floor(cyc);
     if(cn!==last){last=cn;pk=Math.random()*6|0;toks.forEach(m=>{m.u.slot--;if(m.u.slot<0){m.u.slot=5;m.position.x=tx(6);m.material.opacity=0}})} // new token appended, others shift left
@@ -303,8 +315,9 @@ if(R){
 /* ===== project detail popup ===== */
 const mod=$('#mod');let lastF;
 function openP(i){const p=PROJECTS[i];lastF=document.activeElement;$('#mh').textContent='Project 0'+(i+1)+' · '+p.s;$('#mt').textContent=p.t;
-  $('#mb').innerHTML=p.l.map(x=>`<p>${x}</p>`).join('');$('#mg').innerHTML=tags(p.g);const mc=$('#mc'),md=$('#md');mc.hidden=!p.u;if(p.u)mc.href=p.u;mc.textContent=p.ul||'View code';const m3=$('#m3');m3.hidden=!p.u2;if(p.u2)m3.href=p.u2;md.hidden=!p.d;if(p.d)md.href=p.d;mod.classList.add('open');mod.setAttribute('aria-hidden','false');$('#mx').focus()}
-function closeP(){mod.classList.remove('open');mod.setAttribute('aria-hidden','true');lastF&&lastF.focus()}
+  $('#mb').innerHTML=p.l.map(x=>`<p>${x}</p>`).join('');$('#mg').innerHTML=tags(p.g);const mc=$('#mc'),md=$('#md');mc.hidden=!p.u;if(p.u)mc.href=p.u;mc.textContent=p.ul||'View code';const m3=$('#m3');m3.hidden=!p.u2;if(p.u2)m3.href=p.u2;md.hidden=!p.d;if(p.d)md.href=p.d;mod.inert=false;mod.classList.add('open');mod.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');$$('header,main,footer').forEach(el=>el.inert=true);$('#mx').focus()}
+function closeP(){mod.classList.remove('open');document.body.classList.remove('modal-open');$$('header,main,footer').forEach(el=>el.inert=false);lastF&&lastF.focus();mod.inert=true;mod.setAttribute('aria-hidden','true')}
+mod.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const items=$$('a[href],button',mod).filter(el=>!el.hidden),first=items[0],last=items[items.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
 $('#proj').addEventListener('click',e=>{if(e.target.closest('a'))return;const c=e.target.closest('[data-p]');if(c)openP(+c.dataset.p)});
 $('#proj').addEventListener('keydown',e=>{const c=e.target.closest('[data-p]');if(c&&!e.target.closest('a')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openP(+c.dataset.p)}});
 mod.addEventListener('click',e=>{if(e.target===mod)closeP()});$('#mx').addEventListener('click',closeP);
@@ -330,6 +343,7 @@ const out=$('#tout');
 function say(t,c='a'){const d=document.createElement('div');d.className=c;out.append(d);
   if(reduce)d.textContent=t;else{let i=0;const iv=setInterval(()=>{d.textContent=t.slice(0,++i);out.scrollTop=1e9;if(i>=t.length)clearInterval(iv)},9)}out.scrollTop=1e9}
 function ask(q){q=q.trim();if(!q)return;say('> '+q,'u');say(answer(q))}
+$('#tq').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.isComposing||e.keyCode===229))e.preventDefault()});
 $('#tf').addEventListener('submit',e=>{e.preventDefault();const i=$('#tq');ask(i.value);i.value=''});
 $('.term').addEventListener('click',e=>{if(!e.target.closest('button,a'))$('#tq').focus()});
 $('#sug').innerHTML=['about','skills','projects','experience','help'].map(x=>`<button class="chip cap" data-q="${x}">${x}</button>`).join('');
