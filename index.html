@@ -40,7 +40,7 @@ section{min-height:100vh;padding:112px var(--px) 72px;display:flex;flex-directio
 /* hero */
 .hero{display:grid;grid-template-columns:7fr 5fr;gap:40px;align-items:center}
 .hero>div:first-child{container-type:inline-size}
-.hero h1{font-size:clamp(24px,10cqw,120px)}
+.hero h1{font-size:clamp(24px,8.3cqw,120px)}
 .hero p{max-width:52ch;color:var(--m)}
 .btns{display:flex;flex-wrap:wrap;gap:12px}
 .btn{font:700 12px 'Space Mono';text-transform:uppercase;letter-spacing:.08em;padding:14px 20px;border:1px solid var(--b);background:var(--p);color:var(--t);text-decoration:none;cursor:pointer;transition:border-color .15s,color .15s,translate .15s}
@@ -91,18 +91,51 @@ button.chip{cursor:pointer;color:var(--m);font-family:inherit}button.chip:hover{
 #mod.open{opacity:1;pointer-events:auto}
 .card.mp{width:min(640px,100%);padding:32px;gap:16px;transform:none;clip-path:inset(0 0 100% 0);transition:clip-path .4s cubic-bezier(.7,0,.3,1)}
 #mod.open .mp{clip-path:inset(-8px)}.mp h3{font-size:clamp(24px,5vw,40px)}.mp p{padding:0}.mp .tags{padding:0}
-#cur,#cur2{display:none;position:fixed;left:0;top:0;pointer-events:none;z-index:100}
-#cur{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--l)}
-#cur2{width:34px;height:34px;margin:-17px 0 0 -17px;border:1px solid var(--l);transition:width .2s,height .2s,margin .2s,background .2s,rotate .3s}
-body.hot #cur2{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(184,245,0,.1);rotate:45deg}
-@media(pointer:fine){body,a,button,input,.card{cursor:none}#cur,#cur2{display:block}}
 @media(max-width:900px){.ab{grid-template-columns:1fr}}
 .btn[hidden]{display:none}.grid#racks{grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}.node{gap:12px}.node .cap{text-align:right}.card.mp{max-height:88vh;overflow-y:auto}
 .hero>*{min-width:0}.btn,.node{overflow-wrap:anywhere}.node>*{min-width:0}
 @media(max-width:600px){header{height:96px;flex-wrap:wrap;align-content:center;gap:8px}nav{width:100%;padding-bottom:4px}section{padding-top:128px}.card.mp{padding:20px}.stage:before{inset:-16px}}
+/* The graphic gets its own column, keeping motion out of the reading area. */
+.rv{translate:0 18px;transition:opacity .9s cubic-bezier(.22,1,.36,1),translate 1s cubic-bezier(.22,1,.36,1);transition-delay:calc(min(var(--d,0),4)*65ms)}
+nav a{transition:color .35s,border-color .35s}nav a:hover::after{content:none}
+.logo i{animation:none;border-radius:50%}
+.stage{height:420px;background:none;border:0;padding:0;display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;pointer-events:none}
+.stage:before{content:none}
+.scene-top,.scene-caption{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.scene-top{border-bottom:1px solid var(--b);padding-bottom:14px}
+.scene-caption{margin-top:auto;padding-bottom:18px}
+.scene-name{font:600 16px Syne,sans-serif;color:var(--t)}
+.scene-track{height:2px;background:var(--b);overflow:hidden}
+.scene-track span{display:block;width:100%;height:100%;background:var(--l);transform-origin:left;transform:scaleX(var(--scene-progress,0));transition:transform .35s linear}
+#motion-toggle{pointer-events:auto;font:inherit;font-size:12px;color:var(--m);background:none;border:0;padding:4px 8px;cursor:pointer}
+#motion-toggle:hover{color:var(--l)}
+.graphics-unavailable{display:none}
+.card{transition:transform .6s cubic-bezier(.22,1,.36,1),border-color .4s,background .4s}
+.node{transition:translate .4s cubic-bezier(.22,1,.36,1),border-color .4s}
+.node:hover{translate:3px 0}.node:hover b{letter-spacing:.08em}
+.btn{transition:border-color .3s,color .3s,background .3s,translate .4s cubic-bezier(.22,1,.36,1)}
+.btn.pri:hover{transition:background .3s,color .3s,border-color .3s}
+#mod{transition:opacity .4s,visibility .4s;visibility:hidden}
+#mod.open{visibility:visible}
+.card.mp{clip-path:none;transform:translateY(20px) scale(.98);opacity:0;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s}
+#mod.open .mp{clip-path:none;transform:translateY(0) scale(1);opacity:1}
+@media(min-width:1100px){
+  section{padding-right:calc(39vw + var(--px));min-height:100svh}
+  .hero{grid-template-columns:1fr;gap:0}
+  .hero h1{font-size:clamp(36px,8.3cqw,100px)}
+  .stage{position:fixed;right:var(--px);top:23vh;width:32vw;height:60vh;max-height:620px}
+  .big{font-size:clamp(32px,4.6vw,76px)}
+  .ab{grid-template-columns:1fr;gap:24px}
+  #racks,#proj{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #racks .cb{padding:16px}#racks .node{flex-direction:column;gap:4px}#racks .node .cap{text-align:left}
+  .grid{gap:20px}
+}
+@media(max-width:1099px){.hero{grid-template-columns:1fr;gap:44px}.hero h1{font-size:clamp(30px,8.3cqw,90px)}.stage{height:360px}}
+@media(max-width:600px){.stage{height:300px}.scene-top .cap,.scene-caption .cap{font-size:10px}.scene-name{font-size:14px}.hero{gap:36px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.rv{opacity:1;translate:none}.card{transform:none!important}#motion-toggle{display:none}#cur,#cur2{display:none!important}body,a,button,input,.card{cursor:auto}}
 </style></head>
 <body>
-<div id="cur"></div><div id="cur2"></div><canvas id="gl" aria-hidden="true"></canvas>
+<canvas id="gl" aria-hidden="true"></canvas>
 <div id="mod" inert aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="card mp"><i>+</i><i>+</i><i>+</i><i>+</i><div class="cap" id="mh"></div><h3 id="mt"></h3><div id="mb"></div><div class="tags" id="mg"></div><div class="btns"><a class="btn pri" id="mc" href="#" target="_blank" rel="noopener">View code</a><a class="btn" id="m3" href="#" target="_blank" rel="noopener" hidden>View v3 code</a><a class="btn" id="md" href="#" target="_blank" rel="noopener" hidden>Live demo</a><button class="btn" id="mx">Close [esc]</button></div></div></div><div id="scan"></div>
 <header>
   <a class="logo" href="#hero" data-go="hero">MITESH<i></i><span class="cap">AI Engineer</span></a>
@@ -117,9 +150,10 @@ body.hot #cur2{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(184
       <p class="rv" style="--d:2">AI engineering intern based in Noida. I build and evaluate deep learning models, from data to a working app.</p>
       <div class="btns rv" style="--d:3"><a class="btn pri" href="#projects" data-go="projects">View projects</a><a class="btn" href="#contact" data-go="contact">Get in touch</a></div>
     </div>
-    <div class="stage rv" style="--d:2" id="stage">
-      <div class="card" style="position:absolute;inset:0;background:none;border:0;pointer-events:none"><i>+</i><i>+</i><i>+</i><i>+</i></div>
-      
+    <div class="stage" id="stage">
+      <div class="scene-top"><span class="cap">Computational forms</span><button id="motion-toggle" type="button" aria-label="Pause graphic animation" aria-pressed="false">Pause</button></div>
+      <div class="scene-caption"><span class="scene-name" id="scene-name">Neural core</span><span class="cap">Scroll to explore</span></div>
+      <div class="scene-track"><span></span></div>
     </div>
   </div>
 </section>
@@ -163,7 +197,6 @@ body.hot #cur2{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(184
 </footer>
 
 <script type="module">
-import * as THREE from 'three';
 /* ===== EDIT YOUR CONTENT HERE ===== */
 const ABOUT={p:['I am an AI engineering intern based in Noida, Delhi NCR. I completed my B.Tech in Computer Science at Delhi Technical Campus (2022 to 2026).','I like models that hold up when tested honestly, and I like taking them all the way to something people can use.','Outside of work I play chess and volleyball.'],
  side:[['ROLE','AI Engineering Intern'],['LOCATION','Noida, Delhi NCR'],['EDUCATION','B.Tech CSE, DTC'],['HOBBIES','Chess, volleyball']]};
@@ -188,7 +221,9 @@ const EXP=[
  {k:'Education',r:'B.Tech, Computer Science',o:'Delhi Technical Campus (GGSIPU)',p:'2022 to 2026',d:'Major project: ChessIQ, an AI chess coaching app.'}];
 /* ================================== */
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const motion=matchMedia('(prefers-reduced-motion:reduce)');
+let reduce=motion.matches;
+motion.addEventListener('change',()=>{reduce=motion.matches;onScroll()});
 const X='<i>+</i><i>+</i><i>+</i><i>+</i>';
 const tags=g=>g.map((x,j)=>`<span class="chip cap" ${j?'':'style="border-color:var(--l);color:var(--l)"'}># ${x}</span>`).join('');
 const card=(i,hd,st,ti,body,tg,ex='',ft='')=>`<div class="card rv" data-k="${i}" style="--d:${i}" ${ex}>${X}<div class="ch"><div class="cap"><span>${hd}</span><span class="lime">${st}</span></div><h3>${ti}</h3></div><p>${body}</p>${tg?`<div class="tags">${tags(tg)}</div>`:'<div style="height:24px"></div>'}${ft}</div>`;
@@ -203,26 +238,31 @@ $$('.rv').forEach(e=>{if(!e.style.getPropertyValue('--d')&&e.parentElement.child
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 $$('.rv').forEach(e=>io.observe(e));
 
-/* text scramble on headings when their section becomes active */
-const CH='01<>/_#[]';
-function scramble(el){if(reduce)return;const o=el.dataset.o||(el.dataset.o=el.innerHTML),txt=o.replace(/<br>/g,'\n');let f=0;clearInterval(el._t);
- el._t=setInterval(()=>{f++;el.textContent=[...txt].map((c,i)=>c==='\n'||c===' '?c:(i<f/1.5?c:CH[Math.random()*CH.length|0])).join('');
-  if(f>txt.length*1.5){clearInterval(el._t);el.innerHTML=o}},28)}
-
-/* section switching: nav, scan line, active state */
-const secs=$$('main section'),links=$$('#nav a'),scan=$('#scan');let cur=-1;
+const secs=$$('main section'),links=$$('#nav a');let cur=-1;
+const sceneNames=['Neural core','Connections','Latent space','Model layers','Evolution','Signal flow','In orbit'];
+let tops=[];
+const measureSections=()=>{tops=secs.map(section=>section.offsetTop);onScroll()};
 $$('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.getElementById(a.dataset.go).scrollIntoView({behavior:reduce?'auto':'smooth'})}));
 function onScroll(){
-  const mid=scrollY+innerHeight*.5,tops=secs.map(s=>s.offsetTop);let i=0;
-  tops.forEach((t,k)=>{if(mid>=t)i=k});
-  let sceneIndex=0;tops.forEach((t,k)=>{if(scrollY>=t)sceneIndex=k});
-  const nx=tops[sceneIndex+1]??document.body.scrollHeight;
-  S.s=sceneIndex+Math.min(1,Math.max(0,(scrollY-tops[sceneIndex])/(nx-tops[sceneIndex])));
+  if(!tops.length)tops=secs.map(section=>section.offsetTop);
+  const mid=scrollY+innerHeight*.45;let i=0;
+  tops.forEach((top,k)=>{if(mid>=top)i=k});
+  let progress=0;
+  for(let k=1;k<tops.length;k++){
+    const end=tops[k]-innerHeight*.12,start=end-Math.min(innerHeight*.85,(tops[k]-tops[k-1])*.65);
+    progress+=Math.min(1,Math.max(0,(scrollY-start)/(end-start)));
+  }
+  S.s=reduce?i:progress;
   document.documentElement.style.setProperty('--sp',scrollY/Math.max(1,document.body.scrollHeight-innerHeight));
-  if(i!==cur){cur=i;links.forEach((l,k)=>l.classList.toggle('on',k===i));
-    if(!reduce){scan.classList.remove('go');void scan.offsetWidth;scan.classList.add('go')}
-    const h=$('[data-scr]',secs[i]);if(h)scramble(h)}}
+  $('#stage').style.setProperty('--scene-progress',progress/6);
+  if(i!==cur){cur=i;links.forEach((link,k)=>{link.classList.toggle('on',k===i);if(k===i)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current')});
+    $('#scene-name').textContent=sceneNames[i];
+  }
+}
 addEventListener('scroll',onScroll,{passive:true});
+addEventListener('resize',measureSections);
+new ResizeObserver(measureSections).observe($('main'));
+document.fonts.ready.then(measureSections);
 
 /* hover: tilt + spotlight, and tell the 3D core which rack is hovered */
 $$('.card[data-k]').forEach(c=>{
@@ -232,85 +272,11 @@ $$('.card[data-k]').forEach(c=>{
   c.addEventListener('pointerenter',()=>S.hv=+c.dataset.k);
   c.addEventListener('pointerleave',()=>{S.hv=-1;c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')})});
 
-/* ===== 3D TRANSFORMER: embeddings -> N x [multi-head attention + FFN, residuals] -> softmax -> next token fed back ===== */
-const S={s:0,px:0,py:0,hv:-1};
-addEventListener('pointermove',e=>{S.px=e.clientX/innerWidth*2-1;S.py=e.clientY/innerHeight*2-1});
-let R=null;try{R=new THREE.WebGLRenderer({canvas:$('#gl'),antialias:true,alpha:true})}catch(e){}
-if(R){
-  R.setPixelRatio(Math.min(devicePixelRatio,2));
-  const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(45,1,.1,100),g=new THREE.Group(),inn=new THREE.Group(),V=(x,y,z=0)=>new THREE.Vector3(x,y,z);
-  cam.position.z=7;sc.add(g);g.add(inn);inn.position.y=-.1;
-  const LI=new THREE.Color('#B8F500'),VI=new THREE.Color('#8B5CF6'),GR=new THREE.Color('#8A8A8F');
-  const LM=(c,o)=>new THREE.LineBasicMaterial({color:c,transparent:true,opacity:o});
-  const line=(p,c,o,loop)=>{const l=new(loop?THREE.LineLoop:THREE.Line)(new THREE.BufferGeometry().setFromPoints(p),LM(c,o));inn.add(l);return l};
-  const rect=(x0,y0,x1,y1,c,o,z=0)=>line([V(x0,y0,z),V(x1,y0,z),V(x1,y1,z),V(x0,y1,z)],c,o,true);
-  const mat=(c,o,w)=>new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:o,wireframe:!!w});
-  const BX=new THREE.BoxGeometry(1,1,1),SP=new THREE.SphereGeometry(.035,8,8),PL=new THREE.PlaneGeometry(1,1),BG=new THREE.BoxGeometry(1,1,1);BG.translate(0,.5,0);
-  const tx=k=>-1.25+k*.5;
-  // input tokens + embedding bar
-  const toks=[];for(let k=0;k<6;k++){const m=new THREE.Mesh(BX,mat(LI,.9,true));m.scale.setScalar(.2);m.position.set(tx(k),-2.4,0);m.u={slot:k};inn.add(m);toks.push(m);line([V(tx(k),-2.28),V(tx(k),-2.05)],GR,.4)}
-  rect(-1.6,-2.05,1.6,-1.9,VI,.7);line([V(0,-1.9),V(0,-1.55)],GR,.35);
-  // two transformer blocks
-  const blocks=[];
-  for(let b=0;b<2;b++){const y0=-1.55+b*1.75,B={y0,cells:[],nodes:[]};
-    rect(-1.6,y0,1.6,y0+.85,VI,.6);
-    for(let h=0;h<4;h++){const z=(h-1.5)*.1,hx=-1.2+h*.8;rect(hx-.33,y0+.08,hx+.33,y0+.78,GR,.3,z);
-      for(let r=0;r<4;r++)for(let c=0;c<=r;c++){const m=new THREE.Mesh(PL,mat(LI,.1));m.scale.setScalar(.13);m.position.set(hx-.225+c*.15,y0+.68-r*.15,z);inn.add(m);B.cells.push({m,sd:Math.random()*6.3})}}
-    rect(-1.6,y0+.92,1.6,y0+.98,GR,.6);
-    const rows=[[4,y0+1.06],[8,y0+1.24],[4,y0+1.42]],R2=[],pts=[];
-    rows.forEach(([n,y])=>{const row=[];for(let i=0;i<n;i++){const x=(i-(n-1)/2)*(2.4/(n-1)),m=new THREE.Mesh(SP,mat(LI,.8));m.position.set(x,y,0);inn.add(m);B.nodes.push(m);row.push(V(x,y))}R2.push(row)});
-    for(let r=0;r<2;r++)R2[r].forEach(p=>R2[r+1].forEach(q=>pts.push(p,q)));
-    B.ffn=new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),LM(LI,.05));inn.add(B.ffn);
-    rect(-1.6,y0+1.5,1.6,y0+1.56,GR,.6);
-    line([V(-1.6,y0-.1),V(-1.75,y0-.1),V(-1.75,y0+1.53),V(-1.6,y0+1.53)],GR,.5);        // residual skip
-    [y0+.95,y0+1.53].forEach(y=>line(Array.from({length:20},(_,i)=>V(-1.75+Math.cos(i/20*6.283)*.07,y+Math.sin(i/20*6.283)*.07)),LI,.9,true)); // add nodes
-    blocks.push(B)}
-  // output: linear + softmax bars
-  line([V(0,1.76),V(0,1.86)],GR,.4);rect(-1.6,1.86,1.6,1.92,VI,.7);
-  const bars=[];for(let k=0;k<6;k++){const m=new THREE.Mesh(BG,mat(VI,.8,true));m.scale.set(.2,.05,.2);m.position.set(tx(k),2,0);inn.add(m);bars.push(m)}
-  // feedback loop: predicted token goes back to the input
-  const FB=[V(0,2.45),V(2.15,2.45),V(2.15,-2.4),V(1.6,-2.4)],path=new THREE.CurvePath();
-  for(let i=0;i<3;i++)path.add(new THREE.LineCurve3(FB[i],FB[i+1]));
-  line(FB,GR,.3);line([V(0,2.0),V(0,2.45)],GR,.3);
-  // pulses: main stream, residual stream, feedback
-  const pp=new Float32Array(9),pm=new THREE.Points(new THREE.BufferGeometry(),new THREE.PointsMaterial({color:0xF2F0EB,size:.09,transparent:true,opacity:.95}));
-  pm.geometry.setAttribute('position',new THREE.BufferAttribute(pp,3));pm.frustumCulled=false;inn.add(pm);
-  const N=400,P=new Float32Array(N*3);for(let i=0;i<N*3;i++)P[i]=(Math.random()-.5)*(i%3==2?10:16);
-  const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(P,3));
-  sc.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0xF2F0EB,size:.025,transparent:true,opacity:.3})));
-  let W=1,H=1,hx=0,hy=0,heroScale=1;const hw=()=>Math.tan(.3927)*7;
-  function size(){W=innerWidth;H=innerHeight;R.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();
-    const stage=$('#stage'),r=stage.getBoundingClientRect();
-    const translateY=parseFloat(getComputedStyle(stage).translate.split(' ')[1])||0;
-    hx=((r.left+r.width/2)/W*2-1)*hw()*cam.aspect;hy=-((r.top+scrollY-translateY+r.height/2)/H*2-1)*hw();
-    heroScale=.88*Math.min(r.width*2*hw()*cam.aspect/W/4.5,r.height*2*hw()/H/5.5)}
-  addEventListener('resize',size);new ResizeObserver(size).observe($('#stage'));document.fonts.ready.then(size);size();
-  g.position.set(hx,hy,0);
-  const key=(a,s)=>{const i=Math.min(a.length-1,Math.floor(s)),j=Math.min(a.length-1,i+1);return a[i]+(a[j]-a[i])*(s-Math.floor(s))};
-  let cyc=reduce?.55:0,speed=1,hm=0,pk=2,last=0;const clock=new THREE.Clock();
-  (function loop(){
-    const dt=reduce?0:clock.getDelta(),t=clock.elapsedTime,mob=W<900,k=mob?.25:1,hov=S.hv>=0;
-    const tX=key([hx,2.6*k,0,-2.6*k,2.6*k,0,0],S.s),tY=key([hy,0,0,0,0,0,0],S.s),tZ=key([0,-2.5,-4,-3,-3,-4,.5],S.s);
-    g.position.x+=(tX-g.position.x)*.06;g.position.y+=(tY-g.position.y)*.06;g.position.z+=(tZ-g.position.z)*.06;
-    g.scale.setScalar(key([heroScale,...Array(6).fill(mob?.85:Math.min(1.5,H/900+.55))],S.s));
-    speed+=((hov?2.6:1)-speed)*.06;hm+=((hov?1:0)-hm)*.06;
-    cyc+=dt*.14*speed;const ph=cyc%1,cn=Math.floor(cyc);
-    if(cn!==last){last=cn;pk=Math.random()*6|0;toks.forEach(m=>{m.u.slot--;if(m.u.slot<0){m.u.slot=5;m.position.x=tx(6);m.material.opacity=0}})} // new token appended, others shift left
-    const py=ph<.78?-2.3+ph/.78*4.25:-99,fb=ph>.82?path.getPointAt((ph-.82)/.18):V(0,-99);
-    pp.set([0,py,0,-1.75,py,0,fb.x,fb.y,0]);pm.geometry.attributes.position.needsUpdate=true;
-    blocks.forEach(B=>{const a1=Math.max(0,1-Math.abs(py-(B.y0+.45))/.7),a2=Math.max(0,1-Math.abs(py-(B.y0+1.25))/.6);
-      B.cells.forEach(c=>{c.m.material.opacity=.08+a1*(.15+.7*(.5+.5*Math.sin(t*9+c.sd)));c.m.material.color.copy(LI).lerp(VI,hm*.7)});
-      B.nodes.forEach(n=>n.material.opacity=.25+a2*.75);B.ffn.material.opacity=.04+a2*.5});
-    bars.forEach((m,i)=>{const th=ph>.7?(i===pk?.6:.08+.12*Math.abs(Math.sin(i*2.1+cn))):.05;m.scale.y+=(th-m.scale.y)*.1;m.material.color.copy(i===pk&&ph>.7?LI:VI)});
-    toks.forEach(m=>{m.position.x+=(tx(m.u.slot)-m.position.x)*.08;m.material.opacity+=(.9-m.material.opacity)*.06;m.rotation.y+=dt*.6});
-    g.rotation.y+=((reduce?-.4:-.45+Math.sin(t*.3)*.25)+S.px*.3-g.rotation.y)*.05;g.rotation.x+=((.12+S.py*.1)-g.rotation.x)*.05;
-    cam.position.x+=(S.px*.4-cam.position.x)*.04;cam.position.y+=(-S.py*.25-cam.position.y)*.04;cam.lookAt(0,0,0);
-    R.render(sc,cam);requestAnimationFrame(loop)})();
-}else{$('#gl').remove()}
-/* ===== custom cursor ===== */
-{const c1=$('#cur'),c2=$('#cur2');let mx=-99,my=-99,x2=-99,y2=-99;
- addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;c1.style.transform=`translate(${mx}px,${my}px)`;document.body.classList.toggle('hot',!!e.target.closest('a,button,.card,.node,input'))});
- (function f(){x2+=(mx-x2)*.18;y2+=(my-y2)*.18;c2.style.transform=`translate(${x2}px,${y2}px)`;requestAnimationFrame(f)})()}
+const S={s:0,px:0,py:0,hv:-1,paused:false};
+$('#motion-toggle').addEventListener('click',e=>{S.paused=!S.paused;e.currentTarget.setAttribute('aria-pressed',String(S.paused));e.currentTarget.setAttribute('aria-label',S.paused?'Resume graphic animation':'Pause graphic animation');e.currentTarget.textContent=S.paused?'Play':'Pause';onScroll();dispatchEvent(new Event('graphicsmotionchange'))});
+addEventListener('pointermove',e=>{if(e.pointerType==='touch'||reduce)return;S.px=e.clientX/innerWidth*2-1;S.py=e.clientY/innerHeight*2-1});
+onScroll();
+import('./graphics.js').then(({createGraphics})=>createGraphics({canvas:$('#gl'),stage:$('#stage'),state:S,motion})).catch(()=>{$('#gl').hidden=true;$('#stage').classList.add('graphics-unavailable')});
 
 /* ===== project detail popup ===== */
 const mod=$('#mod');let lastF;
